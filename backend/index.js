@@ -11,8 +11,8 @@ app.use(express.json());
 
 app.use("/user",userRouter);
 
-mongoose.connect('mongodb+srv://ea3y:2NWuD7oy3Hhhunzr@cluster0.vhxkjn2.mongodb.net/KEEP',
-                {dbName : 'KEEP'}
+mongoose.connect(`${process.env.MONGO_URL}`,
+                {dbName : `${process.env.MONGO_DB}`}
 )
 
 app.listen(3000, () => console.log('Server is listening on port 3000'))
