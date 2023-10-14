@@ -27,7 +27,8 @@ export const Signin = () => {
         marginLeft : 400,
         marginTop : 70,
         position : "relative",
-        textAlign : "center"
+        textAlign : "center",
+        display: "flex"
       }} >
         <div style={{
           
@@ -35,8 +36,7 @@ export const Signin = () => {
           <img src={tagImage}
               style={{
                 rotate : "290deg",
-                maxHeight : 80,
-                display : "flex"
+                maxHeight : 80
               }}
           ></img>
         </div>
