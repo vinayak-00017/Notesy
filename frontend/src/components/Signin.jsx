@@ -35,7 +35,8 @@ export const Signin = () => {
           <img src={tagImage}
               style={{
                 rotate : "290deg",
-                maxHeight : 80
+                maxHeight : 80,
+                display : "flex"
               }}
           ></img>
         </div>
