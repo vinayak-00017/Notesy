@@ -59,7 +59,7 @@ const router = express.Router();
     if(note){
       res.json({message : "Note updated successfully"})
     }else{
-      res.status(404).json({message : 'Note not found'})
+      res.status(400).json({message : 'Note not found'})
     }
   })
 
@@ -69,7 +69,7 @@ const router = express.Router();
       const deletedItem = await Note.findByIdAndRemove(noteId);
 
       if(!deletedItem){
-        return res.status(404).json({message : "Item not found"})
+        return res.status(400).json({message : "Item not found"})
       }
       const userId = deletedItem.userId;
       await User.findByIdAndUpdate(userId, {$pull: {notes: noteId}})
