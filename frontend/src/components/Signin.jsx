@@ -27,8 +27,7 @@ export const Signin = () => {
         marginLeft : 400,
         marginTop : 70,
         position : "relative",
-        textAlign : "center",
-        display: "flex"
+        textAlign : "center"
       }} >
         <div style={{
           
