@@ -34,7 +34,7 @@ export const Landing = () => {
     if(userLogin){
         navigate("/notes")
     }else{
-        navigate('signin')
+        navigate('/signin')
     }
 
 }
