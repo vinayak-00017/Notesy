@@ -1,4 +1,4 @@
-import { useState ,useEffect} from 'react'
+import { useEffect} from 'react'
 import axios from 'axios';
 import { BASE_URL } from './config.js';
 import {BrowserRouter as Router , Routes , Route} from 'react-router-dom';
@@ -8,7 +8,6 @@ import {Landing} from "./components/Landing.jsx";
 import {Notes} from "./components/Notes.jsx";
 import { RecoilRoot , useSetRecoilState} from 'recoil';
 import { userState } from './store/atoms/user.js';
-import { Appbar } from './components/Appbar.jsx';
 import PrimarySearchAppBar from './components/PrimarySearchAppBar.jsx';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
@@ -36,7 +35,6 @@ function App() {
   <ThemeProvider theme={theme}>
     <RecoilRoot>
       <Router>
-        {/* <Appbar/> */}
         <PrimarySearchAppBar/>
         <InitUser/>
         <Routes>

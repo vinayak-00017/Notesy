@@ -75,10 +75,12 @@ export const Signup = () => {
     >
       <TextField id="" label="Username" variant="outlined" 
       type="text"
+      value={email}
       onChange={(e)=> setEmail(e.target.value)}
       />
       <TextField id="" label="Password" variant="outlined"
       type="password"
+      value={password}
       onChange={(e)=> setPassword(e.target.value)}
       />
      

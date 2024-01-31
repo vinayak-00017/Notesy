@@ -67,7 +67,8 @@ export const Signin = () => {
                 Notesy
       </Typography>
     </div>
-    <div style={{display: "flex", justifyContent: "center"}}>
+    <Box sx={{display:'flex',justifyContent: 'center',flexDirection:'column'}}>
+    <Box sx={{display: "flex", justifyContent: "center"}}>
          <Box
       component="form"
       sx={{
@@ -78,19 +79,22 @@ export const Signin = () => {
     >
       <TextField id="" label="Username" variant="outlined" 
       type="text"
+      value={email}
       onChange={(e)=> setEmail(e.target.value)}
       />
       <TextField id="" label="Password" variant="outlined"
       type="password"
+      value={password}
       onChange={(e)=> setPassword(e.target.value)}
       />
      
     </Box>
-    </div>
+    </Box>
     <div style={{
       display : "flex",
       justifyContent : "center",
-      marginTop : 20
+      marginTop : 20,
+      marginBottom: 20
     }}>
     <Button 
         variant="contained" 
@@ -119,6 +123,44 @@ export const Signin = () => {
             }
         }>Login</Button>
     </div>
+    <Box sx={{display: "flex",justifyContent: 'center',alignItems:'center'}}>
+      <Typography sx={{color:'white'}}>
+        OR
+      </Typography>
+    </Box>
+    <div style={{
+      display : "flex",
+      justifyContent : "center",
+      marginTop : 20
+    }}>
+    <Button 
+        variant="contained" 
+        onClick={
+            async() => {
+                try{
+                    const response = await axios.post(`${BASE_URL}/user/login`,
+                    {
+                        username : "f",
+                        password : "f"
+                    }                
+                    )               
+                    let data = response.data;                 
+                    localStorage.setItem("token",data.token);
+                    setUserLogin({
+                        isUser : true
+                    })
+                    navigate("/notes")
+                    
+                }
+            catch (error) {
+                    console.error("Login Error:", error);
+                    setErrorMessage("An error occurred while logging in.\n(for testing username: f , pass: f)");
+                }
+        
+            }
+        }>Login for testing</Button>
+    </div>
+    </Box>
     <div style={{
         color : "red",
         display : "flex",

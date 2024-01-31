@@ -18,6 +18,7 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 import { isUserLoading } from "../store/selectors/isUserLoading";
 import { useRecoilValue } from "recoil";
+import { search } from "../store/selectors/search";
 
 
 
@@ -28,6 +29,7 @@ export default function Render({note,setNotes}){
     const [color,setColor] = useState(note.bgColor);
     const [isColorDialogOpen,setIsColorDialogOpen] = useState(false);
     const userLoading = useRecoilValue(isUserLoading)
+    const searchItem = useRecoilValue(search)
 
     if(userLoading){
         return  <div style={{
@@ -118,6 +120,7 @@ export default function Render({note,setNotes}){
                 'authorization' : `Bearer ${localStorage.getItem('token')}`
             }
         })
+        console.log(searchItem)
         setNotes((notes) =>
         notes.filter((item) => item._id !== note._id)
       );

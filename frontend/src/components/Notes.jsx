@@ -1,67 +1,42 @@
-import { TextField, Typography ,Card, Button, Dialog, DialogTitle, DialogContent, DialogActions,Popover, CardContent, makeStyles} from "@mui/material"
-import { alignProperty } from "@mui/material/styles/cssUtils"
+import { TextField ,Card, Button} from "@mui/material"
 import React,{useEffect, useState,useRef} from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { noteState } from "../store/atoms/note";
 import axios from "axios";
 import { BASE_URL } from "../config";
-import { note } from "../store/selectors/note";
-import { SketchPicker } from "react-color";
 import Render from "./Render"; 
+import { useRecoilValue } from "recoil";
+import { search } from "../store/selectors/search";
+import { OpenColorPopover} from "./ColorPopover";
 
 
 export const Notes = () => {
 
     const [text, setText] = useState('');
     const [notes, setNotes] = useState([]);
-    const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
+    const useSearch = useRecoilValue(search)
     const [color,setColor] = useState("#ffffff");
-    const [isColorDialogOpen,setIsColorDialogOpen] = useState(false);
     const [isTextFieldFocused,setIsTextFieldFocused] = useState(false)
     const textFieldRef = useRef(null);
+    const [isColorDialogOpen,setIsColorDialogOpen] = useState(false);
+
+    const openColorDialog = () => {
+        setIsColorDialogOpen(true);
+    };
+    
+    const closeColorDialog = () => {
+            setIsColorDialogOpen(false);
+        };
+    
+    const handleColorChange = (color) =>{
+            setColor(color)
+        }
+            
 
     useEffect(() => {
         if(!isTextFieldFocused && textFieldRef.current){
             textFieldRef.current.focus();
         }
-    },[isTextFieldFocused])
-
-    const openColorDialog = (event) => {
-        setIsColorDialogOpen(true);
-    };
-      
-      const closeColorDialog = () => {
-        setIsColorDialogOpen(false);
-    };
+    },[isTextFieldFocused])  
     
-    const handleColorChange = (newColor) => {
-        setColor(newColor.hex);
-    }  
-
-    const openColorPopover = () => {
-        return <Popover
-        open={isColorDialogOpen}
-        anchorEl={null}
-        onClose={closeColorDialog}
-        anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-        }}
-        transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-        }}
-        >
-        <DialogContent>
-            <SketchPicker
-            color={color}
-            onChange={handleColorChange}
-            />
-            <Button onClick={closeColorDialog}>Apply</Button>
-        </DialogContent>
-    </Popover>
-
-    }
       
     const init = async () => {
         const response = await axios.get(`${BASE_URL}/user/notes`,{
@@ -77,9 +52,6 @@ export const Notes = () => {
     },[]);
 
 
-    const handleTextChange = (event) => {
-        setText(event.target.value);
-    };
 
     const handleClose = async() => {
         if(text != "" && text != null){
@@ -97,6 +69,14 @@ export const Notes = () => {
         }          
      
 
+    const filteredNotes = (notes) =>{
+        if(useSearch){
+            return notes.filter(note => note.note.toLowerCase().includes(useSearch.toLowerCase()))
+        }else{
+            return notes
+        }
+    }
+
     return <div> 
 
     <div style={{
@@ -111,7 +91,7 @@ export const Notes = () => {
                     label="Take a note..."
                     multiline
                     value={text}
-                    onChange={handleTextChange}
+                    onChange={(e)=>setText(e.target.value)}
                     variant="outlined"
                     fullWidth
                     // onBlur={() => setIsTextFieldFocused(false)}
@@ -125,7 +105,11 @@ export const Notes = () => {
                         >Color
                         </Button>
                     </div>
-                    {openColorPopover()}
+                    {<OpenColorPopover onColorChange = {handleColorChange}
+                                        isOpen = {isColorDialogOpen}
+                                        handleClose = {closeColorDialog}
+                                        color={color}
+                    />}
                     <div style={{display: "flex" }}>
                         <Button style={{ textTransform : "none"}}
                                 onClick={handleClose}
@@ -140,8 +124,8 @@ export const Notes = () => {
     </div>
 
     <div style={{display: "flex", flexWrap: "wrap",justifyContent : "center"}}>
-    {notes.map(note => {
-        return <Render note = {note} setNotes ={setNotes}  key={note.id} />
+    {filteredNotes(notes).map(note => {
+        return <Render note = {note} setNotes ={setNotes}  key={note._id} />
     })}
     </div>
    
